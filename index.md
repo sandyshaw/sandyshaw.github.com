@@ -1,46 +1,49 @@
 ---
-layout: page
-title: Hello World!
-tagline: Supporting tagline
+layout: default
 ---
-{% include JB/setup %}
+<section id="posts">
+  <ol>
+    {% for post in paginator.posts %}
+    <li>
+      {% include post.html %}
+    </li>
+    {% endfor %}
+  </ol>
 
-Read [Jekyll Quick Start](http://jekyllbootstrap.com/usage/jekyll-quick-start.html)
-
-Complete usage and documentation available at: [Jekyll Bootstrap](http://jekyllbootstrap.com)
-
-## Update Author Attributes
-
-In `_config.yml` remember to specify your own data:
-    
-    title : My Blog =)
-    
-    author :
-      name : Name Lastname
-      email : blah@email.test
-      github : username
-      twitter : username
-
-The theme should reference these variables whenever needed.
-    
-## Sample Posts
-
-This blog contains sample posts which help stage pages and blog data.
-When you don't need the samples anymore just delete the `_posts/core-samples` folder.
-
-    $ rm -rf _posts/core-samples
-
-Here's a sample "posts list".
-
-<ul class="posts">
-  {% for post in site.posts %}
-    <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
-  {% endfor %}
-</ul>
-
-## To-Do
-
-This theme is still unfinished. If you'd like to be added as a contributor, [please fork](http://github.com/plusjade/jekyll-bootstrap)!
-We need to clean up the themes, make theme usage guides with theme-specific markup examples.
-
-
+  {% if paginator.total_pages > 1 %}
+  <nav id="pagination">
+    <ol>
+      {% if paginator.previous_page > 1 %}
+        {% capture page_url %}page{{ page }}{% endcapture%}
+      {% endif %}
+      {% if paginator.previous_page %}
+      <li>
+        <a href="/{{ page_url }}" title="Go to previous page">
+          &laquo;
+        </a>
+      </li>
+      {% endif %}
+      <li>
+      {% for page in (1..paginator.total_pages) %}
+      <li>
+        {% if page > 1 %}
+          {% capture page_url %}page{{ page }}{% endcapture%}
+        {% endif %}
+        {% if page == paginator.page %}
+          {{ page }}
+        {% else %}
+          <a href="/{{ page_url }}">{{ page }}</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+      {% if paginator.next_page %}
+      <li>
+        <a href="/page{{ paginator.next_page }}" title="Go to next page">
+          &raquo;
+        </a>
+      </li>
+      {% endif %}
+    </ol>
+  </nav>
+  {% endif %}
+</section>
